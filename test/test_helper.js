@@ -14,11 +14,13 @@ before ((done) => {
 
 beforeEach((done) => {
     const { users, comments, blogposts } = mongoose.connection.collections;
-
-    users.drop()
-        .then( comments.drop() )
-        .then( blogposts.drop() )
-        .then(() => done());
+        users.drop(() => {
+            comments.drop(() => {
+                blogposts.drop(() => {
+                    done();
+                });
+            });
+        });
     });
 
 
@@ -28,4 +30,3 @@ beforeEach((done) => {
     //    done()
     });
     */
-});
